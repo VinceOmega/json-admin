@@ -1,0 +1,1 @@
+json-admin is a admin designed to preform CRUD actions on the database using json issued commands.
