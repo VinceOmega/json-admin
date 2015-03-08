@@ -16,42 +16,50 @@ $_POST['password'] != ''
 
 
 ){
-	$username_f = $_POST['username'];
-	$password_f = md5($_POST['password']);
+	$username_f = trim(strip_tags($_POST['username']));
+	$password_f = trim(md5(strip_tags($_POST['password'])));
+	$hash_f = trim(md5(strip_tags($_POST['username'])));
 
 	// var_dump($username_f);
 	// var_dump($password_f);
+	// var_dump($hash_f);
+	// die();
 
 //var_dump($_SESSION['admin']);
 
+
 $_SESSION['admin'] = '';
 
-	$db = new mysqli('localhost', $username, $password, 'arifleet');
+	$db = new mysqli('localhost', $username, $password, 'redrobo2_prv');
 		if($db->connect_errno){
 			printf("Connect failed: %s\n", $db->connect_error);
 			exit();
 		}
 
-$stmt = $db->prepare("SELECT username, password FROM meta_users WHERE username = ? AND password = ?");
-$stmt->bind_param("ss", $username_f, $password_f);
+$stmt = $db->prepare("SELECT username, password, hash FROM meta_users WHERE username = ? AND password = ? AND hash = ?");
+$stmt->bind_param("sss", $username_f, $password_f, $hash_f);
 $stmt->execute();
-$stmt->bind_result($user, $pass);
+$stmt->bind_result($user, $pass, $hash);
   while ($stmt->fetch()) {
   	$username = $user;
   	$password = $pass;
-        //printf("%s %s\n", $user, $pass);
+  	$hashvalue = $hash;
+        
     }
+   // printf("%s %s\n", $user, $pass, $hash);
 $stmt->close();
 $db->close();
-//var_dump($user);
-// /var_dump($pass);
-	if($password === NULL){
+// var_dump($username);
+// var_dump($passname);
+// var_dump($hashvalue);
+//die();
+	if($password === NULL OR $hashvalue === NULL){
 		$_SESSION['admin'] = 0;
-		header("Location: /madmin/");
+		header("Location: /cn/json-admin");
 		die();
 	}else{
 		$_SESSION['admin'] = 1;
-		header("Location: /madmin/?id=1");
+		header("Location: /cn/json-admin?itemid=1&itemtype=1");
 		die();
 	}
 }else{

@@ -1,7 +1,7 @@
 <?php
 
-$username = '';
-$password = '';
+$username = 'redrobo2_prv';
+$password = 'Qwerty1986';
 	
 
 ?>
