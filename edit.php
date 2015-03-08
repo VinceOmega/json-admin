@@ -35,25 +35,42 @@ switch($itemtype){
 		<div class="pad">
 	
 		
-			<form method="post" action="insert.php?id=<?php echo $itemid?>">
-				<fieldset>
-				
-
-
-				</fieldset>
+			<form method="post" action="insert.php?itemid=<?php echo $itemid?>&itemtype=<?php echo $itemtype?>">
 				<fieldset>
 					<label for="title">Title</label>
 					<input type="text" name="title" id="title" value="<?php echo $pagename;?>">
 				</fieldset>
 				<fieldset>
-					<label for="url">Item Dir</label>
-					<input type="text" name="url" id="url" value="<?php echo $itemdir;?>">
+					<label for="url">Image</label>
+					<img src="<?php echo $itemdir?>" alt="<?php echo $pagename?>">
+					<input type="text" name="image" id="image" value="<?php echo $itemdir;?>">
 				</fieldset>
 				<fieldset>
 					<label for="h1">Time </label>
-					<input type="text" name="h1" id="h1" value="<?php echo $row_stats['h1'];?>">
+					<input type="text" name="time" id="time" value="<?php echo $timeuploaded;?>">
 				</fieldset>
-				
+				<fieldset>
+				<label>Want to delete this entry?</label>
+				<input type="radio" name="delete" value="1">Yes<br>
+				<input type="radio" name="delete" value="0">No
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Save"> &nbsp;
+					<input type="reset" value="Cancel">
+				</fieldset>
+			</form>
+			<form method="post" action="add.php?itemid=<?php echo $itemid?>&itemtype=<?php echo $itemtype?>">
+				<fieldset>
+					<label for="title">Title</label>
+					<input type="text" name="title" id="title" value="">
+				</fieldset>
+				<fieldset>
+					<label for="url">Image</label>
+					<input type="file" name="image" id="image" value="">
+				</fieldset>
+				<fieldset>
+					<input type="hidden" name="time" id="time" value="<?php echo date("Y-m-d H:i:s")?>">
+				</fieldset>
 				<fieldset>
 					<input type="submit" value="Save"> &nbsp;
 					<input type="reset" value="Cancel">
