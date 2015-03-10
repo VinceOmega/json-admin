@@ -10,8 +10,11 @@
 		}
 
 foreach($_REQUEST as $key => $value){
+	echo $key."<br>";
 		$$key = htmlspecialchars(trim(strip_tags($value)));
 }
+
+print_r($_FILES);
 
 if(isset($_FILES['image']['name'])){
 
@@ -22,7 +25,7 @@ if(isset($_FILES['image']['name'])){
 			);
 
 		echo json_encode($errors);
-		header("Location:/company/careers/apply/");
+		header("Location:/cn/json-admin/?itemid=$itemid&itemtype=$itemtype");
 		die();
 	}	
 
@@ -33,7 +36,7 @@ if(isset($_FILES['image']['name'])){
 			);
 
 		echo json_encode($errors);
-		header("Location:/company/careers/apply/");
+		header("Location:/cn/json-admin/?itemid=$itemid&itemtype=$itemtype");
 		die();
 	}
 
@@ -45,18 +48,20 @@ if(isset($_FILES['image']['name'])){
 		 // echo $ext;
 		 // die();
 
-		if($ext !=  'pdf' && 
-		$ext !=  'doc' && 
-		$ext != 'docx' && 
-		$ext != 'rtf' ){
-		$errors = array(
-				'error' => 'This is the wrong type of file, Please upload a file that has the correct file types.'
-			);
-		echo $ext;
-		echo json_encode($errors);
-		header("Location:/company/careers/apply/");
-		die();
-	}
+
+		/* This section is to limit the type of images you want to upload. */
+		// if($ext !=  'png' && 
+		// $ext !=  'jpeg' && 
+		// $ext != 'jpg' && 
+		// $ext != 'gif' ){
+		// $errors = array(
+		// 		'error' => 'This is the wrong type of file, Please upload a file that has the correct file types.'
+		// 	);
+	// 	echo $ext;
+	// 	echo json_encode($errors);
+	// 	header("Location:/company/careers/apply/");
+	// 	die();
+	// }
 
 
 
@@ -75,8 +80,8 @@ if(isset($_FILES['image']['name'])){
 		// var_dump($_FILES['resume']['name']);
 		// die();
 
-		$normalpath = "http://preview.redrobotprogramming.com/cn/json-admin/img/".$date."-".$_FILES["resume"]["name"];
-		move_uploaded_file($_FILES['resume']['tmp_name'], $uploadpath);
+		$normalpath = "http://preview.redrobotprogramming.com/cn/json-admin/img/".$date."-".$_FILES["image"]["name"];
+		move_uploaded_file($_FILES['image']['tmp_name'], $uploadpath);
 	}
 
 $path = $uploadpath;
@@ -85,24 +90,37 @@ $data = file_get_contents($path);
 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 	/* Now to store all the data in the db */
 
-	$sql = "INSERT into item_lookup
-								SET itemtype = 1"; 
-					$db->query($sql);
+						$sql = "INSERT into item_lookup
+								SET itemtype = '1'"; 
+						if(!$result = $db->query($sql)){
+									printf(mysqli_error($db));
+								}
 
 
 
-						$sql =	 "SELECT itemid FROM item_lookup WHERE MAX(itemid)";
-						$result = $db->query($sql);
+						$sql =	 "SELECT MAX(itemid) FROM item_lookup WHERE itemtype = 1";
+							if(!$result = $db->query($sql)){
+									printf(mysqli_error($db));
+								}
 
-							while($row = $db->mysql_fetch_assoc($result)){
+								echo "<br>"."final var check"."<br>";
+								echo "<pre>";
+								echo print_r($result);
+								echo "</pre>";
+								echo "$title"."<br>";
+								echo "$base64"."<br>";
 
-							$sql "INSERT into image_tbl
-								
-								SET itemid = $row[itemid],
-								itemtype = 1,
-								imagename = '$title',;
-								imagedir = '$base64',;
+							while($row = mysqli_fetch_row($result)){
+									echo "$row[0]";
+							$sql = "INSERT into image_tbl	
+								SET itemid = '$row[0]',
+								itemtype = '1',
+								imagename = '$title',
+								imagedir = '$base64',
 								timeuploaded = NOW()";
 								}
-							$db->query($sql);
-}
+								if(!$result = $db->query($sql)){
+									printf(mysqli_error($db));
+								}
+			}
+	header("Location:/cn/json-admin/?itemid=$itemid&itemtype=$itemtype&added=1");

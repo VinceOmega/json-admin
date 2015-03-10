@@ -12,7 +12,7 @@ if(!isset($_SESSION['admin'])){
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ARI Fleet</title>
+	<title>JSON Admin || Generic Admin for your generic needs.</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,6 +25,11 @@ if(!isset($_SESSION['admin'])){
 <?php if(isset($_GET['changed'])){ ?>
 	<div class="success">
 		Data Saved.
+	</div>
+<?php } ?>
+<?php if(isset($_GET['added'])){ ?>
+	<div class="success">
+		Item Added.
 	</div>
 <?php } ?>
 	<?php
@@ -58,7 +63,7 @@ if(!isset($_SESSION['admin'])){
 		<a href="?signout=1">Sign Out</a>
 	</div>
 	<div class="sidebar">
-		<span class="title">Pages</span>
+		<span class="title">Items</span>
 	<?php include 'nav.php' ?>
 	</div>
 	<?php include 'edit.php' ?>

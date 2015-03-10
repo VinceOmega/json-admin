@@ -10,13 +10,17 @@
 
 <?php
 foreach($_GET as $key => $value){
+	// echo $key."<br>";
+	// echo $value."<br>";
 		$$key = htmlspecialchars(trim(strip_tags($value)));
 }
 switch($itemtype){
 
      case '1':
 	$get_item = $db->query("SELECT il.itemid, il.itemtype, ib.imagedir, ib.imagename, ib.timeuploaded  FROM item_lookup as il LEFT JOIN image_tbl as ib ON il.itemid = ib.itemid WHERE il.itemid = $itemid");
-	$row = mysqli_fetch_assoc($get_item); $pagename = $row['imagename']; $itemdir = $row['imagedir']; $itemtime = $row['timeuploaded'];
+	$row = mysqli_fetch_assoc($get_item); 
+	//print_r($row);
+	$pagename = $row['imagename']; $itemdir = $row['imagedir']; $itemtime = $row['timeuploaded'];
 	break;
 
 	   case '2':
@@ -42,7 +46,7 @@ switch($itemtype){
 				</fieldset>
 				<fieldset>
 					<label for="url">Image</label>
-					<img src="<?php echo $itemdir?>" alt="<?php echo $pagename?>">
+					<img src="<?php echo $itemdir?>" alt="<?php echo $pagename?>"></br>
 					<input type="text" name="image" id="image" value="<?php echo $itemdir;?>">
 				</fieldset>
 				<fieldset>
@@ -59,7 +63,7 @@ switch($itemtype){
 					<input type="reset" value="Cancel">
 				</fieldset>
 			</form>
-			<form method="post" action="add.php?itemid=<?php echo $itemid?>&itemtype=<?php echo $itemtype?>">
+			<form method="post" action="add.php?itemid=<?php echo $itemid?>&itemtype=<?php echo $itemtype?>" enctype="multipart/form-data">
 				<fieldset>
 					<label for="title">Title</label>
 					<input type="text" name="title" id="title" value="">
