@@ -10,10 +10,11 @@ $db = new mysqli('localhost', $username, $password, 'redrobo2_prv');
 
 
 foreach($_REQUEST as $key => $value){
+
 		$$key = htmlspecialchars(trim(strip_tags($value)));
 }
-	
-if($delete != 1){
+	//var_dump($delete);
+if(intval($delete) != 1){
 $stmt = $db->prepare(
 	"UPDATE image_tbl  
 	SET imagedir = TRIM(?),
@@ -24,8 +25,8 @@ $stmt = $db->prepare(
 if($stmt === false){
 	printf(mysqli_error($db));
  }
-
- $stmt->bind_param('ssi', $title, $img, $itemid);
+//echo 'true';
+ $stmt->bind_param('ssi', $image, $title, $itemid);
  $stmt->execute();
  $stmt->close();
 } else {

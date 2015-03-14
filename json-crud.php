@@ -12,6 +12,8 @@ $audiotype = array('audio/mp3', 'audio/ogg','audio/wav');
 $docstype = array("file/pdf", "file/doc", "file/docx", "file/oot");
 
 echo CRUDIR;
+ $json = file_get_contents('php://input');
+print_r($json); 	die();
 
 
 // $_POST['json'] = '
@@ -19,7 +21,7 @@ echo CRUDIR;
 //   "command": "list"
 // }';
 
-if(empty($_POST['json'])){
+if(!$json) {
 	$files = scandir(CRUDIR);
 		foreach($files as $key => $file){
 			//echo $file;
@@ -33,12 +35,10 @@ if(empty($_POST['json'])){
 			// echo "</pre>";
 		}
 } else {
-	$json = json_decode($_POST['json']);
+	//$json = json_decode(file_get_contents('php://input'));
 
-		echo "<pre>";
-		print_r($json); 
-		echo '</pre>';
-		//die();
+		
+	
 }
 		switch($json->command){
 

@@ -10,11 +10,11 @@
 		}
 
 foreach($_REQUEST as $key => $value){
-	echo $key."<br>";
+	// echo $key."<br>";
 		$$key = htmlspecialchars(trim(strip_tags($value)));
 }
 
-print_r($_FILES);
+// print_r($_FILES);
 
 if(isset($_FILES['image']['name'])){
 
@@ -103,15 +103,15 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 									printf(mysqli_error($db));
 								}
 
-								echo "<br>"."final var check"."<br>";
-								echo "<pre>";
-								echo print_r($result);
-								echo "</pre>";
-								echo "$title"."<br>";
-								echo "$base64"."<br>";
+								// echo "<br>"."final var check"."<br>";
+								// echo "<pre>";
+								// echo print_r($result);
+								// echo "</pre>";
+								// echo "$title"."<br>";
+								// echo "$base64"."<br>";
 
 							while($row = mysqli_fetch_row($result)){
-									echo "$row[0]";
+									// echo "$row[0]";
 							$sql = "INSERT into image_tbl	
 								SET itemid = '$row[0]',
 								itemtype = '1',
@@ -122,5 +122,5 @@ $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 								if(!$result = $db->query($sql)){
 									printf(mysqli_error($db));
 								}
+									header("Location:/cn/json-admin/?itemid=$itemid&itemtype=$itemtype&added=1");
 			}
-	header("Location:/cn/json-admin/?itemid=$itemid&itemtype=$itemtype&added=1");
